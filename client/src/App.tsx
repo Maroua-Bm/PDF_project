@@ -468,39 +468,39 @@ const App = () => {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-12">
         <div className="text-center space-y-6 mb-12">
-          <div className="relative inline-block">
-            <div className="w-24 h-24 mx-auto mb-6 relative">
-              <div className="w-full h-full bg-gradient-primary rounded-full flex items-center justify-center animate-float">
-                <Search className="h-12 w-12 text-primary-foreground" />
-              </div>
-              <div className="absolute -inset-4 bg-gradient-accent opacity-20 blur-xl rounded-full animate-pulse-glow" />
-            </div>
-          </div>
-          
-          <div className="space-y-4">
-            <h1 className="text-5xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-              PDF Search Engine
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Upload your PDF documents and search for any word or phrase with intelligent highlighting. 
-              Navigate through results like a professional search engine.
-            </p>
-          </div>
+          {/* Animated PDF Icon + Title */}
+    <div className="flex flex-col items-center justify-center gap-4 text-center">
+  {/* Row: Icon + Title */}
+  <div className="flex items-center justify-center gap-4">
+    <div className="animate-float bg-gradient-primary p-6 rounded-full shadow-md">
+      <FileText className="h-14 w-14 text-primary-foreground animate-pulse" />
+    </div>
+    <h1 className="text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+      PDF Search & Summarizer
+    </h1>
+  </div>
 
-          <div className="flex items-center justify-center gap-8 pt-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <FileText className="h-4 w-4 text-primary" />
-              <span>PDF Upload</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Search className="h-4 w-4 text-accent" />
-              <span>Smart Search</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Sparkles className="h-4 w-4 text-success" />
-              <span>Auto Highlight</span>
-            </div>
-          </div>
+  {/* Description */}
+  <p className="text-lg text-muted-foreground max-w-2xl">
+    Upload your PDF and easily search or summarize its content with intelligent features.
+  </p>
+</div>
+
+       {/* Feature icons (optional - you can remove this block if not needed) */}
+    <div className="flex items-center justify-center gap-8 pt-4">
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <FileText className="h-4 w-4 text-primary" />
+        <span>PDF Upload</span>
+      </div>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Sparkles className="h-4 w-4 text-accent" />
+        <span>Auto Highlight</span>
+      </div>
+      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Sparkles className="h-4 w-4 text-success" />
+        <span>Summarization</span>
+      </div>
+    </div>      
         </div>
 
         {/* Main Interface */}
