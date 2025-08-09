@@ -402,6 +402,42 @@ const App = () => {
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string>('');
+  const [isSummarizing, setIsSummarizing] = useState(false);
+  const [summary, setSummary] = useState<string | null>(null);
+
+  // 👇 New summarization handler (mock API)
+const handleSummarize = async () => {
+  if (!selectedFile) {
+    toast.error("Please upload a PDF first.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("pdf", selectedFile);
+
+  setIsSummarizing(true);
+  setSummary(null);
+
+  try {
+    const res = await fetch("http://localhost:5001/api/pdf/summarize", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to summarize: ${errorText}`);
+    }
+
+    const data = await res.json();
+    setSummary(data.summary);
+  } catch (err) {
+    console.error("Error summarizing document:", err);
+    setSummary("Error: Unable to summarize the document.");
+  } finally {
+    setIsSummarizing(false);
+  }
+};
 
   const handleFileSelect = async (file: File) => {
     setIsUploading(true);
@@ -523,6 +559,16 @@ const App = () => {
                 onClear={handleClearSearch}
               />
               
+<Button
+  onClick={handleSummarize}
+  disabled={isSummarizing || !selectedFile}
+  className="bg-gradient-to-r from-accent to-primary text-black hover:opacity-90"
+>
+  {isSummarizing ? "Summarizing..." : "Summarize Document"}
+</Button>
+
+
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[600px]">
                 {/* PDF Viewer */}
                 <div className="lg:col-span-2">
@@ -569,6 +615,18 @@ const App = () => {
                     </div>
                   )}
 
+
+                  {/* 👇 ADD THIS SUMMARY BLOCK HERE */}
+  {summary && (
+    <div className="bg-card p-4 rounded-lg border shadow-soft">
+      <h3 className="font-semibold text-foreground mb-2">Document Summary</h3>
+      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+        {summary}
+      </p>
+    </div>
+  )}
+
+
                   <div className="bg-card p-4 rounded-lg border shadow-soft">
                     <h3 className="font-semibold text-foreground mb-2">Quick Tips</h3>
                     <ul className="text-sm text-muted-foreground space-y-1">
@@ -603,6 +661,3 @@ const App = () => {
 };
 
 export default App;
-
-
-
