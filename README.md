@@ -42,19 +42,24 @@ Users can:
 
 ---
 
-## 📂 Project Structure
-project/
-│── client/ # React frontend
-│ ├── src/
-│ │ └── components/ # Upload, Search, PDF viewer components
-│── server/ # Node.js backend
-│ ├── routes/ # API routes
-│ ├── controllers/ # Search & summarization logic
-│── core/ # Python processing scripts
-│── shared/ # Temporary file storage
-│── README.md
-
 ## Install dependencies
-Frontend
+### Frontend
 cd client
 npm install
+### Backend
+cd ../server
+npm install
+### Python Core
+cd ../core
+pip install -r requirements.txt
+## ▶️ Running the App
+### Start the Python Core
+cd core
+python main.py
+### Start the Backend (Node.js)
+cd ../server
+node app.js
+### Start the Frontend (React)
+cd ../client
+npm run dev
+
