@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import fitz  
 import sys
 import json
 import google.generativeai as genai
@@ -23,12 +23,8 @@ def summarize_text(text, api_key):
         genai.configure(api_key=api_key)
         model = genai.GenerativeModel("gemini-1.5-flash-latest")
         prompt = f"Summarize the following PDF content:\n\n{text[:15000]}"
-
         response = model.generate_content(prompt)
-
-        # send debug info to stderr, not stdout
         log(f"[Python] Gemini response: {response}")
-
         return response.text
     except Exception as e:
         error_message = str(e)
@@ -37,18 +33,13 @@ def summarize_text(text, api_key):
         log(f"[ERROR] {error_message}")
         raise Exception("Internal error while summarizing PDF")
 
-
-
-
 def main():
     try:
         pdf_path = sys.argv[1]
         api_key = sys.argv[2]
-
         log(f"[Python] PDF Path: {pdf_path}")
         text = extract_text_from_pdf(pdf_path)
         summary = summarize_text(text, api_key)
-
         result = {"summary": summary}
         print(json.dumps(result))
     except Exception as e:

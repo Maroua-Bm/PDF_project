@@ -1,10 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, FileText, Search, ChevronUp, ChevronDown, X, Sparkles } from 'lucide-react';
-import { Toaster } from "sonner";
 import { toast } from "sonner";
 
-// Utility function
 const cn = (...classes: (string | undefined | null | false | Record<string, boolean>)[]): string => {
   return classes
     .map(cls => {
@@ -20,14 +18,12 @@ const cn = (...classes: (string | undefined | null | false | Record<string, bool
     .join(' ');
 };
 
-// Card component
 const Card = ({ children, className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)} {...props}>
     {children}
   </div>
 );
 
-// Input component
 const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
   ({ className, type, ...props }, ref) => {
     return (
@@ -44,7 +40,6 @@ const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLI
   }
 );
 
-// Button component
 const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
@@ -57,14 +52,12 @@ const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HT
     ghost: "hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",
   };
-
   const sizes = {
     default: "h-10 px-4 py-2",
     sm: "h-9 rounded-md px-3",
     lg: "h-11 rounded-md px-8",
     icon: "h-10 w-10",
   };
-
   return (
     <button
       className={cn(
@@ -79,7 +72,6 @@ const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HT
   );
 });
 
-// Badge component
 const Badge = ({ children, className, variant = 'default' }: {
   children: React.ReactNode;
   className?: string;
@@ -91,7 +83,6 @@ const Badge = ({ children, className, variant = 'default' }: {
     destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
     outline: "text-foreground",
   };
-
   return (
     <div className={cn(
       "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
@@ -102,8 +93,6 @@ const Badge = ({ children, className, variant = 'default' }: {
     </div>
   );
 };
-
-// File Upload Component
 const FileUpload = ({ onFileSelect, isLoading }: {
   onFileSelect: (file: File) => void;
   isLoading?: boolean;
@@ -126,7 +115,6 @@ const FileUpload = ({ onFileSelect, isLoading }: {
     onDragLeave: () => setIsDragActive(false),
     disabled: isLoading
   });
-
   return (
     <Card
       {...getRootProps()}
@@ -143,7 +131,6 @@ const FileUpload = ({ onFileSelect, isLoading }: {
       )}
     >
       <input {...getInputProps()} />
-      
       <div className="flex flex-col items-center gap-6">
         <div className="relative">
           <div className={cn(
@@ -165,7 +152,6 @@ const FileUpload = ({ onFileSelect, isLoading }: {
             <div className="absolute -inset-2 rounded-full bg-gradient-primary opacity-20 blur-lg animate-pulse-glow" />
           )}
         </div>
-
         <div className="space-y-2">
           <h3 className="text-xl font-semibold text-foreground">
             {isLoading ? 'Processing PDF...' : 'Upload PDF Document'}
@@ -186,15 +172,12 @@ const FileUpload = ({ onFileSelect, isLoading }: {
     </Card>
   );
 };
-
-// Search Interface Component
 interface SearchResult {
   search_query: string;
   total_matches: number;
   matched_sentences: string[];
   highlighted_pdf: string;
 }
-
 const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
   onSearch: (query: string) => void;
   searchResult?: SearchResult;
@@ -210,7 +193,6 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
       setCurrentMatch(1);
     }
   };
-
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       if (searchResult && currentMatch < searchResult.total_matches) {
@@ -232,13 +214,11 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
       setCurrentMatch(prev => prev - 1);
     }
   };
-
   const handleClear = () => {
     setQuery('');
     setCurrentMatch(1);
     onClear?.();
   };
-
   return (
     <Card className="p-6 shadow-card">
       <div className="space-y-4">
@@ -265,7 +245,6 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
               </Button>
             )}
           </div>
-          
           <Button 
             onClick={handleSearch}
             disabled={!query.trim() || isSearching}
@@ -281,7 +260,6 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
             )}
           </Button>
         </div>
-
         {searchResult && (
           <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
             <div className="flex items-center gap-3">
@@ -291,8 +269,7 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
               <span className="text-sm text-muted-foreground">
                 for "{searchResult.search_query}"
               </span>
-            </div>
-            
+            </div>            
             {searchResult.total_matches > 1 && (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">
@@ -322,7 +299,6 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
             )}
           </div>
         )}
-
         {searchResult && searchResult.matched_sentences.length > 0 && (
           <div className="space-y-2">
             <h4 className="text-sm font-medium text-foreground">Matched Sentences:</h4>
@@ -353,7 +329,6 @@ const SearchInterface = ({ onSearch, searchResult, isSearching, onClear }: {
   );
 };
 
-// PDF Viewer Component
 const PDFViewer = ({ pdfUrl, fileName }: {
   pdfUrl?: string;
   fileName?: string;
@@ -373,7 +348,6 @@ const PDFViewer = ({ pdfUrl, fileName }: {
       </Card>
     );
   }
-
   return (
     <Card className="flex-1 overflow-hidden">
       <div className="h-full flex flex-col">
@@ -383,20 +357,17 @@ const PDFViewer = ({ pdfUrl, fileName }: {
           </div>
         )}
         <div className="flex-1 relative">
-        <iframe
-   src={pdfUrl}
-   className="w-full min-h-[1000px] h-[80vh] border-0 rounded-b-lg"
-   title="PDF Viewer"
-/>
-
+          <iframe
+            src={pdfUrl}
+            className="w-full min-h-[1000px] h-[80vh] border-0 rounded-b-lg"
+            title="PDF Viewer"
+          />
         </div>
       </div>
     </Card>
   );
 };
-
-// Main App Component
-const App = () => {
+const Index = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [searchResult, setSearchResult] = useState<SearchResult | null>(null);
@@ -404,81 +375,63 @@ const App = () => {
   const [pdfUrl, setPdfUrl] = useState<string>('');
   const [isSummarizing, setIsSummarizing] = useState(false);
   const [summary, setSummary] = useState<string | null>(null);
-
-  // 👇 New summarization handler (mock API)
-const handleSummarize = async () => {
-  if (!selectedFile) {
-    toast.error("Please upload a PDF first.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("pdf", selectedFile);
-
-  setIsSummarizing(true);
-  setSummary(null);
-
-  try {
-    const res = await fetch("http://localhost:5001/api/pdf/summarize", {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to summarize: ${errorText}`);
+  const handleSummarize = async () => {
+    if (!selectedFile) {
+      toast.error("Please upload a PDF first.");
+      return;
     }
-
-    const data = await res.json();
-    setSummary(data.summary);
-  } catch (err) {
-    console.error("Error summarizing document:", err);
-    setSummary("Error: Unable to summarize the document.");
-  } finally {
-    setIsSummarizing(false);
-  }
-};
-
+    const formData = new FormData();
+    formData.append("pdf", selectedFile);
+    setIsSummarizing(true);
+    setSummary(null);
+    try {
+      const res = await fetch("http://localhost:5001/api/pdf/summarize", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to summarize: ${errorText}`);
+      }
+      const data = await res.json();
+      setSummary(data.summary);
+    } catch (err) {
+      console.error("Error summarizing document:", err);
+      setSummary("Error: Unable to summarize the document.");
+    } finally {
+      setIsSummarizing(false);
+    }
+  };
   const handleFileSelect = async (file: File) => {
     setIsUploading(true);
     setSelectedFile(file);
-    
-    // Create a URL for the original PDF to display
     const url = URL.createObjectURL(file);
     setPdfUrl(url);
     
     setIsUploading(false);
     toast.success(`${file.name} uploaded successfully! Ready for searching.`);
   };
-
   const handleSearch = async (query: string) => {
     if (!selectedFile) {
       toast.error("Please upload a PDF file first.");
       return;
     }
-
-    setIsSearching(true);
-    
+    setIsSearching(true);  
     try {
       const formData = new FormData();
       formData.append('pdf', selectedFile);
       formData.append('query', query);
-
-      // Replace with your backend URL
       const response = await fetch('http://localhost:5001/api/pdf/search', 
         {
         method: 'POST',
         body: formData,
       });
-
       if (!response.ok) {
         throw new Error('Search failed');
       }
-
       const result = await response.json();
       setSearchResult(result);
-      setPdfUrl(result.highlighted_pdf); // <-- Update viewer to show highlighted PDF
-
+      setPdfUrl(result.highlighted_pdf);
       toast.success(`Found ${result.total_matches} ${result.total_matches === 1 ? 'match' : 'matches'} for "${query}".`);
     } catch (error) {
       console.error('Search error:', error);
@@ -487,7 +440,6 @@ const handleSummarize = async () => {
       setIsSearching(false);
     }
   };
-
   const handleClearSearch = () => {
     setSearchResult(null);
     // Reset PDF viewer to original file
@@ -496,53 +448,46 @@ const handleSummarize = async () => {
       setPdfUrl(url);
     }
   };
-
   return (
-    <div className="min-h-screen bg-background">
-      <Toaster position="top-right" />
-      
-      {/* Hero Section */}
+    <div className="min-h-screen bg-background">    
       <div className="container mx-auto px-4 py-12">
         <div className="text-center space-y-6 mb-12">
-          {/* Animated PDF Icon + Title */}
-    <div className="flex flex-col items-center justify-center gap-4 text-center">
-  {/* Row: Icon + Title */}
-  <div className="flex items-center justify-center gap-4">
-    <div className="animate-float bg-gradient-primary p-6 rounded-full shadow-md">
-      <FileText className="h-14 w-14 text-primary-foreground animate-pulse" />
-    </div>
-    <h1 className="text-5xl font-extrabold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-      PDF Search & Summarizer
-    </h1>
-  </div>
-
-  {/* Description */}
-  <p className="text-lg text-muted-foreground max-w-2xl">
-    Upload your PDF and easily search or summarize its content with intelligent features.
-  </p>
-</div>
-
-       {/* Feature icons (optional - you can remove this block if not needed) */}
-    <div className="flex items-center justify-center gap-8 pt-4">
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <FileText className="h-4 w-4 text-primary" />
-        <span>PDF Upload</span>
-      </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Sparkles className="h-4 w-4 text-accent" />
-        <span>Auto Highlight</span>
-      </div>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Sparkles className="h-4 w-4 text-success" />
-        <span>Summarization</span>
-      </div>
-    </div>      
+          <div className="flex flex-col items-center justify-center gap-6 text-center">
+            <div className="flex items-center justify-center gap-6">
+              <div className="animate-float bg-gradient-primary p-8 rounded-full shadow-glow">
+                <FileText className="h-16 w-16 text-primary-foreground animate-pulse" />
+              </div>
+              <h1 className="text-6xl font-extrabold text-primary">
+                PDF Search & Summarizer
+              </h1>
+            </div>
+            <p className="text-xl text-muted-foreground max-w-3xl">
+              Upload your PDF and easily search or summarize its content with intelligent AI-powered features.
+            </p>
+            <div className="flex items-center justify-center gap-8 pt-6">
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+                <span className="font-medium">PDF Upload</span>
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 bg-accent/10 rounded-lg">
+                  <Search className="h-5 w-5 text-accent" />
+                </div>
+                <span className="font-medium">Smart Search</span>
+              </div>
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 bg-gradient-accent/10 rounded-lg">
+                  <Sparkles className="h-5 w-5 text-accent" />
+                </div>
+                <span className="font-medium">AI Summarization</span>
+              </div>
+            </div>      
+          </div>
         </div>
-
-        {/* Main Interface */}
         <div className="max-w-7xl mx-auto">
           {!selectedFile ? (
-            /* Upload Section */
             <div className="max-w-2xl mx-auto">
               <FileUpload 
                 onFileSelect={handleFileSelect} 
@@ -550,38 +495,45 @@ const handleSummarize = async () => {
               />
             </div>
           ) : (
-            /* Search and View Section */
             <div className="space-y-6">
-              <SearchInterface
-                onSearch={handleSearch}
-                searchResult={searchResult || undefined}
-                isSearching={isSearching}
-                onClear={handleClearSearch}
-              />
-              
-<Button
-  onClick={handleSummarize}
-  disabled={isSummarizing || !selectedFile}
-  className="bg-gradient-to-r from-accent to-primary text-black hover:opacity-90"
->
-  {isSummarizing ? "Summarizing..." : "Summarize Document"}
-</Button>
-
-
+              <div className="space-y-4">
+                <SearchInterface
+                  onSearch={handleSearch}
+                  searchResult={searchResult || undefined}
+                  isSearching={isSearching}
+                  onClear={handleClearSearch}
+                />                
+                <div className="flex justify-center">
+                  <Button
+                    onClick={handleSummarize}
+                    disabled={isSummarizing || !selectedFile}
+                    className="bg-gradient-accent hover:opacity-90 text-accent-foreground shadow-soft px-8 py-3"
+                  >
+                    {isSummarizing ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-accent-foreground border-t-transparent mr-2" />
+                        Summarizing...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="h-4 w-4 mr-2" />
+                        Summarize Document
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 min-h-[600px]">
-                {/* PDF Viewer */}
                 <div className="lg:col-span-2">
                   <PDFViewer 
                     pdfUrl={pdfUrl} 
                     fileName={selectedFile.name}
                   />
                 </div>
-                
-                {/* Sidebar */}
                 <div className="space-y-4">
-                  <div className="bg-card p-4 rounded-lg border shadow-soft">
-                    <h3 className="font-semibold text-foreground mb-2">Document Info</h3>
+                  <Card className="p-4 shadow-soft">
+                    <h3 className="font-semibold text-foreground mb-3">Document Info</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">File:</span>
@@ -596,10 +548,9 @@ const handleSummarize = async () => {
                         <span className="font-medium">PDF</span>
                       </div>
                     </div>
-                  </div>
-
+                  </Card>
                   {searchResult && (
-                    <div className="bg-card p-4 rounded-lg border shadow-soft">
+                    <Card className="p-4 shadow-soft">
                       <h3 className="font-semibold text-foreground mb-3">Search Results</h3>
                       <div className="space-y-3">
                         <div className="flex items-center gap-2">
@@ -612,42 +563,55 @@ const handleSummarize = async () => {
                           Press <kbd className="px-2 py-1 bg-muted rounded text-xs font-mono">Enter</kbd> to navigate between results
                         </div>
                       </div>
-                    </div>
+                    </Card>
                   )}
-
-
-                  {/* 👇 ADD THIS SUMMARY BLOCK HERE */}
-  {summary && (
-    <div className="bg-card p-4 rounded-lg border shadow-soft">
-      <h3 className="font-semibold text-foreground mb-2">Document Summary</h3>
-      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-        {summary}
-      </p>
-    </div>
-  )}
-
-
-                  <div className="bg-card p-4 rounded-lg border shadow-soft">
-                    <h3 className="font-semibold text-foreground mb-2">Quick Tips</h3>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      <li>• Search for exact phrases using quotes</li>
-                      <li>• Use Enter to navigate between results</li>
-                      <li>• Results are highlighted in the PDF</li>
-                      <li>• Upload a new file to start over</li>
+                  <Card className="p-4 shadow-soft">
+                    <h3 className="font-semibold text-foreground mb-3">Quick Tips</h3>
+                    <ul className="text-sm text-muted-foreground space-y-2">
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent">•</span>
+                        <span>Search for exact phrases using quotes</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent">•</span>
+                        <span>Use Enter to navigate between results</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent">•</span>
+                        <span>Results are highlighted in the PDF</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="text-accent">•</span>
+                        <span>Upload a new file to start over</span>
+                      </li>
                     </ul>
-                  </div>
+                  </Card>
+                  {summary && (
+                    <Card className="p-4 shadow-soft bg-gradient-to-br from-accent/5 to-primary/5">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="p-1.5 bg-gradient-accent rounded-md">
+                          <Sparkles className="h-4 w-4 text-accent-foreground" />
+                        </div>
+                        <h3 className="font-semibold text-foreground">Summary</h3>
+                      </div>
+                      <div className="max-h-80 overflow-y-auto">
+                        <p className="text-sm text-muted-foreground whitespace-pre-wrap leading-relaxed">
+                          {summary}
+                        </p>
+                      </div>
+                    </Card>
+                  )}
                 </div>
               </div>
-
-              {/* Upload New File Button */}
               <div className="text-center pt-6">
                 <button
                   onClick={() => {
                     setSelectedFile(null);
                     setPdfUrl('');
                     setSearchResult(null);
+                    setSummary(null);
                   }}
-                  className="px-6 py-2 text-sm text-primary hover:text-primary-glow underline underline-offset-4 transition-colors"
+                  className="px-6 py-2 text-sm text-primary hover:text-accent underline underline-offset-4 transition-colors"
                 >
                   Upload a different PDF
                 </button>
@@ -660,4 +624,4 @@ const handleSummarize = async () => {
   );
 };
 
-export default App;
+export default Index;

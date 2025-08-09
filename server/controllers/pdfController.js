@@ -1,6 +1,5 @@
 const path = require("path");
 const { processPDFSearch, processPDFSummary } = require("../services/pdfService");
-
 const searchInPDF = async (req, res) => {
   try {
     const filePath = path.resolve(req.file.path);
