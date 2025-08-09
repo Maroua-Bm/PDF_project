@@ -39,27 +39,25 @@ Users can:
 - PyMuPDF for PDF text extraction
 - HuggingFace Transformers for summarization
 - NLTK for text preprocessing
-
----
-
+  
 ## Install dependencies
 ### Frontend
-cd client
-npm install
+- cd client
+- npm install
 ### Backend
-cd ../server
-npm install
+- cd ../server
+- npm install
 ### Python Core
-cd ../core
-pip install -r requirements.txt
+- cd ../core
+- pip install -r requirements.txt
 ## ▶️ Running the App
 ### Start the Python Core
-cd core
-python main.py
+- cd core
+- python main.py
 ### Start the Backend (Node.js)
-cd ../server
-node app.js
+- cd ../server
+- node app.js
 ### Start the Frontend (React)
-cd ../client
-npm run dev
+- cd ../client
+- npm run dev
 
